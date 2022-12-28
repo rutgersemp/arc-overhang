@@ -18,88 +18,109 @@ from tkinter import messagebox
 
 top = tkinter.Tk()
 top.title("Arc GEN")
-label_list = [
-     ["Arc generator",            0]
-    ,["Line width",               0.35]
-    ,["Layer height",             0.4]
-    ,["Arc extrusion multiplier", 1.05]
-    ,["Feedrate",                 2]
-    ,["BrimWidth",                5]
-    ,["Overhang Height",          20]
-    ,["Filament DIA",             1.75]
-    ,["Base Height",              0.5]
-    ,["Max circle radius",        10]
-    ,["Min circle radius",        2]
-    ,["Points per circle",        40]
-    ,["Radius of random polygon", 10]
-    ,["Polygon irregularity",     0.5]
-    ,["Polygon spikiness",        0.3]
-    ,["Polygon num vertices",     15]
-    ,["X Axis position",          100]
-    ,["Y Axis position",          50]]
+label_list = {
+	 "Arc generator":            0
+	,"Line width":               0.35
+	,"Layer height":             0.4
+	,"Arc extrusion multiplier": 1.05
+	,"Feedrate":                 2
+	,"BrimWidth":                5
+	,"Overhang Height":          20
+	,"Filament DIA":             1.75
+	,"Base Height":              0.5
+	,"Max circle radius":        10
+	,"Min circle radius":        2
+	,"Points per circle":        40
+	,"Radius of random polygon": 10
+	,"Polygon irregularity":     0.5
+	,"Polygon spikiness":        0.3
+	,"Polygon num vertices":     15
+	,"X Axis position":          100
+	,"Y Axis position":          50
+}
+    
+
 L = []
-for i, label in enumerate(label_list):
-    L.append("nothing")
-    L[i] = Label(top, text=label_list[i][0],).grid(row=i,column=0)
-
-
 E = []
-for i in range(len(label_list)-1):
-    E.append("nothing")
-    E[i] = Entry(top, bd =5)
-    E[i].grid(row = i+1,column=1)
-    E[i].insert(i, str(label_list[i+1][1]))
+for i, option in enumerate(label_list.items()):
+    L.append( Label(top, text = option[0],) )
+    L[i].grid(row=i,column=0)
+
+    E.append( Entry(top, bd = 5) )
+    E[i].grid(row = i, column = 1)
+    E[i].insert(i, str(option[1]))
 
 def proces():
-    global LINE_WIDTH
     i = 0
+
+    global ARC_GEN    
+    ARC_GEN=int(Entry.get(E[i]))
+    i += 1
+
+    global LINE_WIDTH
     LINE_WIDTH=float(Entry.get(E[i]))
     i += 1
+
     global LAYER_HEIGHT
     LAYER_HEIGHT = float(Entry.get(E[i]))
     i += 1
+
     global ARC_E_MULTIPLIER
     ARC_E_MULTIPLIER = float(Entry.get(E[i]))
     i += 1
+
     global FEEDRATE
     FEEDRATE = float(Entry.get(E[i]))
     i += 1
+
     global BRIM_WIDTH
     BRIM_WIDTH = float(Entry.get(E[i]))
     i += 1
+
     global OVERHANG_HEIGHT
     OVERHANG_HEIGHT = float(Entry.get(E[i]))
     i += 1
+
     global FILAMENT_DIAMETER
     FILAMENT_DIAMETER = float(Entry.get(E[i]))
     i += 1
+
     global BASE_HEIGHT
     BASE_HEIGHT = float(Entry.get(E[i]))
     i += 1
+
     global R_MAX
     R_MAX = float(Entry.get(E[i]))
     i += 1
+
     global R_MIN
     R_MIN = float(Entry.get(E[i]))
     i += 1
+
     global N
     N = float(Entry.get(E[i]))
     i += 1
+
     global  avg_radius
     avg_radius = float(Entry.get(E[i]))
     i += 1
+
     global irregularity
     irregularity = float(Entry.get(E[i]))
     i += 1
+
     global spikiness
     spikiness = float(Entry.get(E[i]))
     i += 1
+
     global num_vertices
     num_vertices = float(Entry.get(E[i]))
     i += 1
+
     global x_axis
     x_axis = float(Entry.get(E[i]))
     i += 1
+
     global y_axis
     y_axis = float(Entry.get(E[i]))
     top.destroy()
@@ -211,6 +232,7 @@ curr_z -= LAYER_HEIGHT*2
 with open(OUTPUT_FILE_NAME, 'a') as gcode_file:
         gcode_file.write(f"G1 Z{'{0:.3f}'.format(curr_z)} F500\n")
 
+
 # Create multiple layers
 r = LINE_WIDTH
 small_arc_radius = 0.5 # Arcs smaller than this get reduced speed and/or flow settings.
@@ -289,7 +311,6 @@ for i in range(100):
             #file_name = util.image_number(image_name_list)   
             #plt.savefig(file_name, dpi=200)
             #image_name_list.append(file_name + ".png")
-
 """
 # Turn images into gif + MP4
 print("Making gif")
